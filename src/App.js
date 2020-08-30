@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const [userName, setUserName] = useState("Marekipa");
+  const [taskItem, setTaskItems] = useState([
+    { name: "Task One", done: false },
+    { name: "Task Two", done: false },
+    { name: "Task Three", done: false },
+    { name: "Task Four", done: true },
+  ]);
+
+  const taskTableRows = () => {
+    return taskItem.map((task) => (
+      <tr key={task.name}>
+        <td>{task.name}</td>
+      </tr>
+    ));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello World</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Done</th>
+          </tr>
+        </thead>
+
+        <tbody>{taskTableRows()}</tbody>
+      </table>
     </div>
   );
 }
