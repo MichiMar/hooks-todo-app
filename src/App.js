@@ -3,15 +3,17 @@ import "./App.css";
 import { TaskRow } from "./components/TaskRow";
 import { TaskBanner } from "./components/TaskBanner";
 import { TaskCreator } from "./components/TaskCreator";
+import { VisibilityControl } from "./components/VisibilityControl";
 
 function App() {
   const [userName, setUserName] = useState("Marekipa");
   const [taskItems, setTaskItems] = useState([
     { name: "Task One", done: false },
     { name: "Task Two", done: false },
-    { name: "Task Three", done: false },
-    { name: "Task Four", done: true },
+    { name: "Task Three", done: true },
+    { name: "Task Four", done: false },
   ]);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const createNewTask = (taskName) => {
     if (!taskItems.find((t) => t.name === taskName)) {
@@ -24,10 +26,12 @@ function App() {
       taskItems.map((t) => (t.name === task.name ? { ...t, done: !t.done } : t))
     );
 
-  const taskTableRows = () =>
-    taskItems.map((task) => (
-      <TaskRow key={task.name} task={task} toggleTask={toggleTask} />
-    ));
+  const taskTableRows = (doneValue) =>
+    taskItems
+      .filter((task) => task.done === doneValue)
+      .map((task) => (
+        <TaskRow key={task.name} task={task} toggleTask={toggleTask} />
+      ));
 
   return (
     <div className="App">
@@ -41,8 +45,28 @@ function App() {
           </tr>
         </thead>
 
-        <tbody>{taskTableRows()}</tbody>
+        <tbody>{taskTableRows(false)}</tbody>
       </table>
+
+      <div className="bg-secondary-text-white text-center p-2">
+        <VisibilityControl
+          description="Completed Task"
+          isChecked={showCompleted}
+          callback={(checked) => setShowCompleted(checked)}
+        />
+      </div>
+
+      {showCompleted && (
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Done</th>
+            </tr>
+          </thead>
+          <tbody>{taskTableRows(true)}</tbody>
+        </table>
+      )}
     </div>
   );
 }
