@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { TaskRow } from "./components/TaskRow";
-
 import "./App.css";
+import { TaskRow } from "./components/TaskRow";
 import { TaskBanner } from "./components/TaskBanner";
+import { TaskCreator } from "./components/TaskCreator";
 
 function App() {
   const [userName, setUserName] = useState("Marekipa");
@@ -12,6 +12,12 @@ function App() {
     { name: "Task Three", done: false },
     { name: "Task Four", done: true },
   ]);
+
+  const createNewTask = (taskName) => {
+    if (!taskItems.find((t) => t.name === taskName)) {
+      setTaskItems([...taskItems, { name: taskName, done: false }]);
+    }
+  };
 
   const toggleTask = (task) =>
     setTaskItems(
@@ -26,6 +32,7 @@ function App() {
   return (
     <div className="App">
       <TaskBanner userName={userName} taskItems={taskItems} />
+      <TaskCreator callback={createNewTask} />
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
