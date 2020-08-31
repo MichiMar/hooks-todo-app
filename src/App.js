@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+
 import { TaskRow } from "./components/TaskRow";
 import { TaskBanner } from "./components/TaskBanner";
 import { TaskCreator } from "./components/TaskCreator";
@@ -14,6 +15,26 @@ function App() {
     { name: "Task Four", done: false },
   ]);
   const [showCompleted, setShowCompleted] = useState(true);
+
+  useEffect(() => {
+    const data = localStorage.getItem("task");
+    if (data != null) {
+      setTaskItems(JSON.parse(data));
+    } else {
+      setUserName("Marekipa Example");
+      setTaskItems([
+        { name: "Task One Example", done: false },
+        { name: "Task Two Example", done: false },
+        { name: "Task Three Example", done: true },
+        { name: "Task Four Example", done: false },
+      ]);
+      setShowCompleted(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("task", JSON.stringify(taskItems));
+  }, [taskItems]);
 
   const createNewTask = (taskName) => {
     if (!taskItems.find((t) => t.name === taskName)) {
